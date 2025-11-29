@@ -101,7 +101,7 @@ const page = () => {
                   </div>
                   <div className="caption text-white">
                     {mode === "signup"
-                      ? "Sign up to discover amazing deals"
+                      ? ""
                       : "Log in to your account"}
                   </div>
                   <form className="flex flex-col gap-2" onSubmit={(e) => e.preventDefault()}>
@@ -173,3 +173,4 @@ const page = () => {
 };
 
 export default page;
+
