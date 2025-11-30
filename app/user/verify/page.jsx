@@ -6,14 +6,13 @@ import Link from "next/link";
 const Page = () => {
   const [user, setUser] = useState(null);
   const [opinions, setOpinions] = useState([]);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  // Load logged-in user
   useEffect(() => {
     const saved = localStorage.getItem("user");
     if (saved) setUser(JSON.parse(saved));
   }, []);
 
-  // Load all opinions
   useEffect(() => {
     async function loadOpinions() {
       const res = await fetch("/api/opinion/all");
@@ -23,7 +22,6 @@ const Page = () => {
     loadOpinions();
   }, []);
 
-  // Handle voting FOR EACH POLL
   const handleVote = async (id, option) => {
     if (!user) {
       alert("Please login to vote.");
@@ -43,10 +41,10 @@ const Page = () => {
     });
 
     const data = await res.json();
+
     if (data.success) {
       localStorage.setItem(voteKey, "1");
 
-      // Reload updated opinions
       const r = await fetch("/api/opinion/all");
       const updated = await r.json();
       setOpinions(updated.opinions);
@@ -58,13 +56,25 @@ const Page = () => {
       <div className="verifycontent bg-black min-h-[100vh] pb-10">
 
         {/* NAVBAR */}
-        <div className="flex justify-center w-full">
-          <div className="backdrop-blur-xl rounded-full px-10 py-4 flex items-center shadow-lg w-full justify-between">
+        <div className="flex justify-center w-full px-4 pt-4">
+          <div className="
+            backdrop-blur-xl rounded-full px-6 md:px-10 py-4
+            flex items-center shadow-lg w-full justify-between
+          ">
             <div className="text-white text-xl font-semibold font-title">
               Social Proof Engine
             </div>
 
-            <ul className="flex items-center gap-8 text-white text-md font-title">
+            {/* Mobile Menu Button */}
+            <div
+              className="md:hidden text-white text-2xl cursor-pointer"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              ☰
+            </div>
+
+            {/* Desktop Menu */}
+            <ul className="hidden md:flex items-center gap-8 text-white text-md font-title">
               <Link href="/">
                 <li className="cursor-pointer p-2 hover:bg-white hover:text-black rounded-full">
                   Home
@@ -81,6 +91,32 @@ const Page = () => {
             </ul>
           </div>
         </div>
+
+        {/* MOBILE DROPDOWN MENU */}
+        {menuOpen && (
+          <div className="md:hidden mt-3 flex justify-center">
+            <div className="
+              backdrop-blur-xl bg-white/10 border border-white/20 shadow-lg
+              rounded-xl p-4 w-[90%] text-white text-center space-y-4 font-title
+            ">
+              <Link href="/">
+                <div className="cursor-pointer hover:text-gray-300">
+                  Home
+                </div>
+              </Link>
+
+              <Link href="/user/answer">
+                <div className="cursor-pointer hover:text-gray-300">
+                  Share an Opinion?
+                </div>
+              </Link>
+
+              <div className="text-gray-200">
+                {user ? user.username : "User"}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* POLLS */}
         {opinions.map((opinion, index) => {
@@ -100,18 +136,14 @@ const Page = () => {
                 {index + 1}. {opinion.message}
               </p>
 
-              {/* YES BUTTON */}
+              {/* Agree */}
               <div
                 onClick={() => !voted && handleVote(opinion._id, "yes")}
-                className={`mb-4 cursor-pointer ${
-                  voted ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`mb-4 cursor-pointer ${voted ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 <div className="flex justify-between mb-1">
                   <span>Agree</span>
-                  <span className="font-semibold">
-                    {Math.round(yesPercent)}%
-                  </span>
+                  <span className="font-semibold">{Math.round(yesPercent)}%</span>
                 </div>
 
                 <div className="w-full h-3 border border-white rounded-full overflow-hidden">
@@ -122,18 +154,14 @@ const Page = () => {
                 </div>
               </div>
 
-              {/* NO BUTTON */}
+              {/* Disagree */}
               <div
                 onClick={() => !voted && handleVote(opinion._id, "no")}
-                className={`cursor-pointer ${
-                  voted ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`cursor-pointer ${voted ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 <div className="flex justify-between mb-1">
                   <span>Disagree</span>
-                  <span className="font-semibold">
-                    {Math.round(noPercent)}%
-                  </span>
+                  <span className="font-semibold">{Math.round(noPercent)}%</span>
                 </div>
 
                 <div className="w-full h-3 border border-white rounded-full overflow-hidden">
