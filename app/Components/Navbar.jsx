@@ -143,13 +143,13 @@ const Navbar = () => {
 
                                     <div className="flex items-center gap-5 md:gap-10 mt-5 font-title flex-wrap justify-center">
                                         <Link href="/user/answer">
-                                            <div className="cursor-pointer p-2 hover:bg-white hover:text-black hover:rounded-full text-sm md:text-base">
+                                            <div className="cursor-pointer p-2 hover:bg-white hover:text-black hover:rounded-full text-sm md:text-base bg-white text-black rounded-full">
                                                 Share an Opinion
                                             </div>
                                         </Link>
 
                                         <Link href="/user/verify">
-                                            <div className="cursor-pointer p-2 hover:bg-white hover:text-black hover:rounded-full text-sm md:text-base">
+                                            <div className="cursor-pointer p-2 hover:bg-white hover:text-black hover:rounded-full text-sm md:text-base bg-white text-black rounded-full">
                                                 Verify an Opinion?
                                             </div>
                                         </Link>
@@ -171,3 +171,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
