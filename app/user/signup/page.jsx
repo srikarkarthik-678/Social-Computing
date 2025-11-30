@@ -109,7 +109,7 @@ const page = () => {
 
                   <div className="caption text-white text-center">
                     {mode === "signup"
-                      ? "Sign up to discover amazing deals"
+                      ? ""
                       : "Log in to your account"}
                   </div>
 
@@ -203,3 +203,4 @@ const page = () => {
 };
 
 export default page;
+
